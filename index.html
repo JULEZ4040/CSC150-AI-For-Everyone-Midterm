@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wording Check</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--ink:#14213d;--muted:#5b6a85;--line:#d5ddea;--accent:#1d4ed8;--m:#ffd9a8;--f:#c9e8ff;--low:#1a7f4b;--med:#b7791f;--high:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1626;--card:#16213a;--ink:#e8eefc;--muted:#9fb0d0;--line:#2a3a5c;--accent:#7aa2ff;--m:#6b4a1c;--f:#1d4a6b;--low:#4cc38a;--med:#e5b54a;--high:#ff7b6b}}
+:root[data-theme="dark"]{--bg:#0e1626;--card:#16213a;--ink:#e8eefc;--muted:#9fb0d0;--line:#2a3a5c;--accent:#7aa2ff;--m:#6b4a1c;--f:#1d4a6b;--low:#4cc38a;--med:#e5b54a;--high:#ff7b6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:2rem;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 20px;max-width:60ch}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:600;font-size:.9rem}
+.steps li::before{content:counter(s) ". ";color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+label{display:block;font-weight:600;margin-bottom:6px}
+textarea{width:100%;min-height:150px;resize:vertical;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+#kw{min-height:70px;margin-bottom:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button{font:inherit;font-weight:600;border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+button.go{background:var(--accent);border-color:var(--accent);color:#fff}
+[data-theme="dark"] button.go,:root:not([data-theme="light"]) button.go{color:#0e1626}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#out{margin-top:16px;display:none}
+.score{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.badge{font-size:1.6rem;font-weight:800;padding:8px 18px;border-radius:10px;border:3px solid currentColor}
+.Low{color:var(--low)}.Medium{color:var(--med)}.High{color:var(--high)}
+.note{margin:12px 0 0}
+.view{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;min-height:150px}
+mark{border-radius:4px;padding:0 2px;color:inherit}
+mark.m{background:var(--m)}mark.f{background:var(--f)}
+.legend{font-size:.85rem;color:var(--muted);margin:8px 0 0}
+ul.flags{margin:8px 0 0;padding-left:20px}
+.fine{margin-top:20px;font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Wording Check</h1>
+<p class="sub">Paste a job's keywords and anonymized resume text. The tool highlights gender-coded wording so a recruiter can take a second look.</p>
+<ol class="steps"><li>Paste Text</li><li>Spot Gendered Wording</li><li>Review the Score</li></ol>
+
+<div class="grid">
+  <section class="panel">
+    <label for="kw">Job keywords</label>
+    <textarea id="kw" placeholder="e.g. software engineer, team player, ninja, python"></textarea>
+    <label for="cv">Anonymized resume text</label>
+    <textarea id="cv" placeholder="Paste made-up or anonymized text here"></textarea>
+    <div class="row">
+      <button class="go" id="run">Run Wording Check</button>
+      <button id="s1">Load biased sample</button>
+      <button id="s2">Load neutral sample</button>
+      <button id="clr">Clear</button>
+    </div>
+  </section>
+  <section class="panel" id="out" aria-live="polite">
+    <div class="score"><div class="badge" id="badge"></div><div><strong id="count"></strong><div id="split" class="legend"></div></div></div>
+    <p class="note" id="note"></p>
+    <div class="view" id="view"></div>
+    <p class="legend"><mark class="m">Masculine-coded</mark> <mark class="f">Feminine-coded</mark></p>
+    <ul class="flags" id="flags"></ul>
+  </section>
+</div>
+<p class="fine">Informational only. This tool flags wording and does not make hiring decisions. A person always decides. It uses synthetic examples and stores nothing.</p>
+</main>
+<script>
+const M=["aggressiv\\w*","ambitio\\w*","assertiv\\w*","competitiv\\w*","dominan\\w*","dominat\\w*","driven","fearless","independen\\w*","ninja","rockstar","superior\\w*","outspoken","decisive\\w*","forceful","headstrong","self-reliant","manpower","chairman","salesman","work hard,? play hard"];
+const F=["supportiv\\w*","nurtur\\w*","collaborat\\w*","sensitiv\\w*","warm\\w*","empath\\w*","compassion\\w*","loyal\\w*","pleasant","gentle","understanding","caring","interpersonal"];
+const rx=(a,t)=>({re:new RegExp("\\b("+a.join("|")+")(?![a-z])","gi"),t});
+const sets=[rx(M,"m"),rx(F,"f")];
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BIASED="We need an aggressive, dominant rockstar who is a fearless self-starter. As a competitive and driven leader, I was the chairman of my club and managed a salesman team. Independent and outspoken, I thrive in a work hard, play hard culture.";
+const NEUTRAL="I have three years of experience building web applications in Python and JavaScript. I led a project that reduced page load time by 30 percent and wrote documentation for the team. I enjoy learning new tools and mentoring interns.";
+$("s1").onclick=()=>{$("cv").value=BIASED;$("kw").value="software engineer, ninja, python"};
+$("s2").onclick=()=>{$("cv").value=NEUTRAL;$("kw").value="software engineer, python, documentation"};
+$("clr").onclick=()=>{$("cv").value="";$("kw").value="";$("out").style.display="none"};
+$("run").onclick=()=>{
+  const text=$("kw").value+"\n"+$("cv").value;
+  if(!text.trim()){alert("Paste some keywords or resume text first.");return}
+  let hits=[];
+  sets.forEach(s=>{let m;s.re.lastIndex=0;while((m=s.re.exec(text))){hits.push({i:m.index,w:m[0],t:s.t})}});
+  hits.sort((a,b)=>a.i-b.i);
+  let html="",pos=0;
+  hits.forEach(h=>{html+=esc(text.slice(pos,h.i))+'<mark class="'+h.t+'">'+esc(h.w)+"</mark>";pos=h.i+h.w.length});
+  html+=esc(text.slice(pos));
+  const n=hits.length,mc=hits.filter(h=>h.t==="m").length,fc=n-mc;
+  const lvl=n<=1?"Low":n<=4?"Medium":"High";
+  $("badge").textContent=lvl+" Risk";$("badge").className="badge "+lvl;
+  $("count").textContent=n+" flagged phrase"+(n===1?"":"s");
+  $("split").textContent=mc+" masculine-coded, "+fc+" feminine-coded";
+  $("note").textContent=n===0?"No gender-coded wording found. No extra review needed for wording.":lvl==="Low"?"Only one phrase flagged. Take a quick look at it before moving on.":"Review the highlighted phrases before building a shortlist. A person should decide whether the wording is a concern.";
+  $("view").innerHTML=html;
+  const uniq=[...new Set(hits.map(h=>h.t+":"+h.w.toLowerCase()))];
+  $("flags").innerHTML=uniq.map(u=>"<li>"+esc(u.slice(2))+" ("+(u[0]==="m"?"masculine-coded":"feminine-coded")+")</li>").join("");
+  $("out").style.display="block";
+  $("out").scrollIntoView({behavior:"smooth",block:"nearest"});
+};
+</script>
+</body>
+</html>
