@@ -29,10 +29,10 @@ Use **Load biased sample** or **Load neutral sample** to see example results. Us
 
 ## How It Works
 
-The tool matches the pasted text against two word lists using case-insensitive regular expressions.
+The tool matches the pasted text against substantially expanded masculine-coded and feminine-coded vocabulary lists using case-insensitive regular expressions. The lists include many terms, phrases, and word families (for example, `collaborat\\w*` can match collaborate, collaborative, and collaboration). They are not literally every English word: gender coding depends on context, and the lists are heuristic rather than exhaustive or definitive.
 
-- **Masculine-coded list:** for example aggressive, dominant, ninja, rockstar, competitive, chairman, salesman
-- **Feminine-coded list:** for example supportive, nurturing, collaborative, empathetic, loyal
+- **Masculine-coded list:** for example aggressive, ambitious, analytical, competitive, dominant, independent, ninja, rockstar
+- **Feminine-coded list:** for example agreeable, collaborative, compassionate, empathetic, nurturing, supportive, thoughtful
 
 Risk level is based on the total number of flagged phrases:
 
@@ -43,14 +43,14 @@ Risk level is based on the total number of flagged phrases:
 
 ## Customizing
 
-To change which words are flagged, edit the `M` (masculine-coded) and `F` (feminine-coded) arrays near the top of the `<script>` section. Each entry is a regular expression fragment, so `"collaborat\\w*"` matches collaborate, collaborative, collaboration, and so on.
+To change which words are flagged, edit the `M` (masculine-coded) and `F` (feminine-coded) arrays near the top of the `<script>` section. Each entry is a regular expression fragment, so `"collaborat\\w*"` matches collaborate, collaborative, collaboration, and so on. These are heuristic examples, not definitive labels; review each match in context.
 
 To change the risk thresholds, edit the line that sets `lvl`.
 
 ## Limitations
 
 - It is a keyword matcher. It has no understanding of context, so a flagged word is not necessarily biased.
-- The word lists are short and simplified. They are not a validated research instrument.
+- The word lists are heuristic and are not a validated or exhaustive research instrument.
 - It only checks wording. It does not detect other sources of bias.
 - English only.
 

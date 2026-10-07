@@ -73,8 +73,29 @@ ul.flags{margin:8px 0 0;padding-left:20px}
 <p class="fine">Informational only. This tool flags wording and does not make hiring decisions. A person always decides. It uses synthetic examples and stores nothing.</p>
 </main>
 <script>
-const M=["aggressiv\\w*","ambitio\\w*","assertiv\\w*","competitiv\\w*","dominan\\w*","dominat\\w*","driven","fearless","independen\\w*","ninja","rockstar","superior\\w*","outspoken","decisive\\w*","forceful","headstrong","self-reliant","manpower","chairman","salesman","work hard,? play hard"];
-const F=["supportiv\\w*","nurtur\\w*","collaborat\\w*","sensitiv\\w*","warm\\w*","empath\\w*","compassion\\w*","loyal\\w*","pleasant","gentle","understanding","caring","interpersonal"];
+const M=[
+  "active","adventur\\w*","aggressiv\\w*","ambitio\\w*","analytical","assertiv\\w*","athletic","autonom\\w*",
+  "battle\\w*","boast\\w*","bold","brav\\w*","challeng\\w*","champion\\w*","competitiv\\w*","confiden\\w*",
+  "conquer\\w*","courageous","decisiv\\w*","determined","domin\\w*","driven","fearless","forceful","greedy",
+  "headstrong","hierarch\\w*","hostile","impulsive","independen\\w*","individualistic","ambition","intellect\\w*",
+  "lead\\w*","logic\\w*","manpower","objective","outspoken","persisten\\w*","principled","reckless","risk-tak\\w*",
+  "rockstar","ninja","salesman","chairman","self-confident","self-reliant","self-sufficient","stubborn",
+  "superior\\w*","tough","work hard,? play hard","achievement-oriented","action-oriented","adrenaline",
+  "argumentative","authoritative","controlling","crafty","critical","daring","egotistical",
+  "entrepreneurial","expert","industrious","individual","influential","initiative","inventive","master\\w*","power\\w*",
+  "self-assured","self-directed","self-motivated","self-reliant","status","strategic","strong","take charge","winner"
+];
+const F=[
+  "affectionate","agreeable","approachable","caring","cheerful","collaborat\\w*","communal","compassion\\w*",
+  "considerat\\w*","cooperat\\w*","dependab\\w*","emotion\\w*","empath\\w*","enthusiastic","gentle","honest",
+  "interpersonal","kind","loyal\\w*","modest","nurtur\\w*","pleasant","polite","responsive","sensitiv\\w*",
+  "supportiv\\w*","sympathetic","tender","thoughtful","trust\\w*","understanding","warm\\w*","helpful",
+  "patient","friendly","inclusive","listening","relationship\\w*","share\\w*","team-oriented","tactful",
+  "conscientious","dedicated","committed","flexible","reliable","sincere","unselfish","accommodat\\w*",
+  "affiliat\\w*","agreeab\\w*","approv\\w*","cohesive","dependen\\w*","interdependen\\w*","nonsupervisory",
+  "quiet","reserved","submissive","trusting","yield\\w*","team player","teamwork","people-oriented",
+  "service-oriented","kindness"
+];
 const rx=(a,t)=>({re:new RegExp("\\b("+a.join("|")+")(?![a-z])","gi"),t});
 const sets=[rx(M,"m"),rx(F,"f")];
 const $=id=>document.getElementById(id);
