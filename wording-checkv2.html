@@ -36,6 +36,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outl
 .Low{color:var(--low)}.Medium{color:var(--med)}.High{color:var(--high)}
 .note{margin:12px 0 0}
 .view{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;min-height:150px}
+.lbl{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 2px}
+.lbl:first-child{margin-top:0}
 mark{border-radius:4px;padding:0 2px;color:inherit}
 mark.m{background:var(--m)}mark.f{background:var(--f)}
 .legend{font-size:.85rem;color:var(--muted);margin:8px 0 0}
@@ -111,9 +113,9 @@ $("run").onclick=()=>{
   let hits=[];
   sets.forEach(s=>{let m;s.re.lastIndex=0;while((m=s.re.exec(text))){hits.push({i:m.index,w:m[0],t:s.t})}});
   hits.sort((a,b)=>a.i-b.i);
-  let html="",pos=0;
-  hits.forEach(h=>{html+=esc(text.slice(pos,h.i))+'<mark class="'+h.t+'">'+esc(h.w)+"</mark>";pos=h.i+h.w.length});
-  html+=esc(text.slice(pos));
+  const seg=(a,b)=>{let h="",p=a;hits.forEach(x=>{if(x.i>=a&&x.i<b){h+=esc(text.slice(p,x.i))+'<mark class="'+x.t+'">'+esc(x.w)+"</mark>";p=x.i+x.w.length}});return h+esc(text.slice(p,b))};
+  const k=$("kw").value.length;
+  const html='<div class="lbl">Job keywords</div>'+seg(0,k)+'<div class="lbl">Resume text</div>'+seg(k+1,text.length);
   const n=hits.length,mc=hits.filter(h=>h.t==="m").length,fc=n-mc;
   const lvl=n<=1?"Low":n<=4?"Medium":"High";
   $("badge").textContent=lvl+" Risk";$("badge").className="badge "+lvl;
