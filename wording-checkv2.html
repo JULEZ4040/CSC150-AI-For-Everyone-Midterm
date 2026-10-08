@@ -47,9 +47,9 @@ ul.flags{margin:8px 0 0;padding-left:20px}
 </head>
 <body>
 <main>
-<h1>Wording Check</h1>
-<p class="sub">Paste a job's keywords and anonymized resume text. The tool highlights gender-coded wording so a recruiter can take a second look.</p>
-<ol class="steps"><li>Paste Text</li><li>Spot Gendered Wording</li><li>Review the Score</li></ol>
+<h1>Wording Check v2</h1>
+<p class="sub">Paste job keywords and anonymized resume text. The tool highlights wording patterns that may read as gender-coded so a recruiter can review them in context.</p>
+<ol class="steps"><li>Paste Text</li><li>Review Wording Patterns</li><li>Check the Risk Score</li></ol>
 
 <div class="grid">
   <section class="panel">
@@ -121,7 +121,7 @@ $("run").onclick=()=>{
   $("badge").textContent=lvl+" Risk";$("badge").className="badge "+lvl;
   $("count").textContent=n+" flagged phrase"+(n===1?"":"s");
   $("split").textContent=mc+" masculine-coded, "+fc+" feminine-coded";
-  $("note").textContent=n===0?"No gender-coded wording found. No extra review needed for wording.":lvl==="Low"?"Only one phrase flagged. Take a quick look at it before moving on.":"Review the highlighted phrases before building a shortlist. A person should decide whether the wording is a concern.";
+  $("note").textContent=n===0?"No gender-coded wording was matched in this sample. A quick wording review is still useful, but this result does not indicate a candidate issue.":lvl==="Low"?"Only one phrase was flagged. Review it in context before deciding whether it matters.":"Review the highlighted phrases in context before building a shortlist. A person should decide whether the wording is a concern.";
   $("view").innerHTML=html;
   const uniq=[...new Set(hits.map(h=>h.t+":"+h.w.toLowerCase()))];
   $("flags").innerHTML=uniq.map(u=>"<li>"+esc(u.slice(2))+" ("+(u[0]==="m"?"masculine-coded":"feminine-coded")+")</li>").join("");

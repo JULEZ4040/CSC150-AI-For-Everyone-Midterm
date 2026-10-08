@@ -1,6 +1,6 @@
 # Wording Check
 
-A single-file web tool that highlights gender-coded wording in job keywords and anonymized resume text, so a recruiter can take a second look. It flags wording only. It does not score candidates or make hiring decisions.
+A single-file web tool (v2) that highlights wording patterns that may read as gender-coded in job keywords and anonymized resume text, so a recruiter can review them in context. It flags wording only. It does not score candidates or make hiring decisions.
 
 ## Features
 
